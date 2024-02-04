@@ -1,0 +1,87 @@
+options{
+LOOKAHEAD=3;
+}
+
+PARSER_BEGIN(MinijavaLex)
+class MinijavaLex{
+        static void main( String[] args )
+        throws ParseException, TokenMgrError {
+        MinijavaLex parser = new MinijavaLex( System.in ) ;
+        parser.Start() ;
+        }
+ }
+
+ PARSER_END(MinijavaLex)
+
+ TOKEN:
+   {
+   <AND: "&&">
+   | <LESS_THAN: "<">
+   | <PLUS: "+">
+   | <MULTIPLY: "*">
+   | <IDENTIFIER: "[a-zA-Z][a-zA-Z0-9_]*"> //I'm just using literals here rather than defining e.g. digit, upper_case,
+                                           // lower_case because it's more concise and doesn't impact readability in my
+                                           // opinion
+   | <INTEGER_LITERAL: "[0-9]*">
+   | <TRUE: "true">
+   | <FALSE: "false">
+   | <LPARENS: "(">
+   | <RPARENS: ")">
+   | <LBRACKET: "[">
+   | <RBRACKET: "]">
+   | <ASSIGN: "=">
+   | <DOT: ".">
+   | <LENGTH: "length">
+   | <END_LINE: ";">
+   | <IF: "if">
+   | <NEW: "new">
+   | <WHILE: "while">
+   | <PRINT: "System.out.println">
+   | <COMMA: ",">
+   | <NEGATE: "!">
+   | <L_C_BRACKET: "{">
+   | <R_C_BRACKET: "}">
+   | <EXTENDS: "extends">
+   | <THIS: "this">
+   | <INT: "int">
+   }
+
+   SKIP : { " " }
+   SKIP : {"\n" | "\r" | "\r\n"}
+
+
+
+
+
+ void NonCombinatoryExp() :
+ {}
+ {
+
+    <INTEGER_LITERAL>
+   | <TRUE>
+   | <FALSE>
+   | <IDENTIFIER>
+   | <THIS>
+   | <NEW> <INT> <LBRACKET> Exp() <RBRACKET>
+   | <NEW> <IDENTIFIER> <LPARENS> <RPARENS>
+   | <NEGATE> Exp()
+   | <LPARENS> Exp() <RPARENS>
+ }
+
+ void Exp():
+ {}
+ {
+     NonCombinatoryExp() Exp()
+    | NonCombinatoryExp() <PLUS> Exp()
+    | NonCombinatoryExp() <MULTIPLY> Exp()
+    | NonCombinatoryExp() <LBRACKET> Exp() <RBRACKET>
+    | NonCombinatoryExp() <DOT> <LENGTH>
+    | NonCombinatoryExp() <DOT> <IDENTIFIER> <LPARENS> ExpList() <RPARENS>
+  }
+
+ void ExpList() :
+ {}
+ {
+     Exp() <LPARENS> <COMMA> Exp() <RPARENS> <MULTIPLY>
+ }
+
