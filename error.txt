@@ -1,0 +1,15 @@
+class LexicalError {
+    public static void main(String[] args) {
+        System.out.print(new errorTest().test());
+    }
+}
+
+class errorTest {
+    public int test() {
+        int x = 4;
+        int y = 7;
+        int z;
+        if x > 5 then if y == 3 then z = x + y else z = x - y // Ambiguous line (if parser is LL(1) then throws error)
+        return z
+    }
+}
