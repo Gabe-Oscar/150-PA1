@@ -1,0 +1,41 @@
+/* 
+This is a test file. 
+Here, we showcase the defined tokens in minijavaLex.jj working.
+*/
+
+class LexicalError {
+    public static void main(String[] args) {
+        // Test integers, identifier, assign(=), semicolon, print, Strings, left/right parenthesis, if statement, less than, equality, open and close bracket
+        int a = 5;
+        int b = 4;
+        System.out.println("this is a test");
+        if (a < b or a == b) {
+            a = a * b;
+        }
+
+        // Test boolean, true, false, negation (!, !=), 
+        boolean c = true;
+        if (c != false) {
+            c = !(c);
+        }
+        
+        // Test print, new, and all tokens mentioned below.
+        System.out.print(new returnTest().test());
+    }
+
+
+}
+
+// Used to test return, while, else, strings, length, identifiers with digits
+class returnTest {
+    public int test() {
+        String abc123 = "hello"
+        while (true){
+            if (abc123 == "bye" && length(abc123) <= 4) {
+                return 0
+            } else {
+                return 1
+            }
+        }
+    }
+}
